@@ -22,18 +22,15 @@ jobs:
 
     - name: Restore
       run: dotnet restore
-      working-directory: ContinuousDeployment
-
+      
     - name: Build
       run: dotnet build -c Release -f:net10.0-windows10.0.19041.0
-      working-directory: ContinuousDeployment
-
+      
     - name: Publish
-      run: dotnet publish -c Release -f:net10.0-windows10.0.19041.0 /p:GenerateAppsxPackageOnBuild=true /p:AppxPackageSigningEnabled=false /p:AppxBundle=Never
-      working-directory: ContinuousDeployment
+      run: dotnet publish -c Release -f:net10.0-windows10.0.19041.0 /p:GenerateAppsxPackageOnBuild=true /p:AppxPackageSigningEnabled=false /p:AppxBundle=Never      
           
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: Build
-        path: ContinuousDeployment/bin/Release/net10.0-windows10.0.19041.0/win-x64/AppPackages/**/*.msix
+        path: bin/Release/net10.0-windows10.0.19041.0/win-x64/AppPackages/**/*.msix
