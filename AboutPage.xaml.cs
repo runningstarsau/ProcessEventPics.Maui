@@ -22,25 +22,25 @@ public partial class AboutPage : ContentPage
         }
     }
 
-    private async void OnBackClicked(object sender, EventArgs e)
+    private async void OnBackClicked(object? sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
     }
 
-    private async void OnWebsiteTapped(object sender, EventArgs e)
+    private async void OnWebsiteTapped(object? sender, EventArgs e)
     {
         try
         {
             var uri = new Uri("https://runningstars.org.au");
             await Launcher.OpenAsync(uri);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            await DisplayAlert("Error", $"Unable to open website: {ex.Message}", "OK");
+            await DisplayAlertAsync("Error", "Unable to open website.", "OK");
         }
     }
 
-    private async void OnEmailTapped(object sender, EventArgs e)
+    private async void OnEmailTapped(object? sender, EventArgs e)
     {
         try
         {
@@ -49,14 +49,14 @@ public partial class AboutPage : ContentPage
                 Subject = "Process Event Pics - Inquiry",
                 To = new List<string> { "info@runningstars.org.au" }
             };
-            
+
             await Email.ComposeAsync(message);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // If email client is not available, try to copy to clipboard
             await Clipboard.SetTextAsync("info@runningstars.org.au");
-            await DisplayAlert("Email", "Email address copied to clipboard:\ninfo@runningstars.org.au", "OK");
+            await DisplayAlertAsync("Email", "Email address copied to clipboard:\ninfo@runningstars.org.au", "OK");
         }
     }
 }

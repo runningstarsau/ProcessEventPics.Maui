@@ -10,8 +10,10 @@ public class FolderPickerService : IFolderPickerService
     public async Task<string?> PickFolderAsync()
     {
         var folderPicker = new FolderPicker();
-        
-        var window = ((MauiWinUIWindow)Application.Current.Windows[0].Handler.PlatformView);
+
+        var window = (MauiWinUIWindow?)Application.Current?.Windows[0]?.Handler?.PlatformView;
+        if (window == null)
+            return null;
         var hwnd = WindowNative.GetWindowHandle(window);
         InitializeWithWindow.Initialize(folderPicker, hwnd);
 
