@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ProcessEventPics.Maui.ViewModels"
+             xmlns:models="clr-namespace:ProcessEventPics.Maui.Models"
+             xmlns:converters="clr-namespace:ProcessEventPics.Maui.Converters"
+             x:Class="ProcessEventPics.Maui.MainPage"
+             BackgroundColor="White"
+             x:DataType="viewmodels:MainViewModel">
+
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+        <converters:FavoriteBorderColorConverter x:Key="FavoriteBorderColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+        <!-- Header with Logo, Title, Info and Settings buttons -->
+        <Grid Grid.Row="0" 
+              Padding="20,10"
+              BackgroundColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#2196F3'}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="{Binding SelectedBrand.LogoFileName, FallbackValue='dotnet_bot.png'}"
+                   HeightRequest="40"
+                   WidthRequest="40"
+                   Aspect="AspectFit"
+                   VerticalOptions="Center"
+                   Margin="0,0,15,0" />
+
+            <Label Grid.Column="1"
+                   Text="{Binding SelectedBrand.Name, StringFormat='{0} - Process Pics', FallbackValue='Process Event Pics'}"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{Binding SelectedBrand.SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='White'}"
+                   VerticalOptions="Center" />
+
+            
+            <Button Grid.Column="2"
+                    Text="About" 
+                    Command="{Binding ShowInfoCommand}"
+                    FontSize="18"
+                    BorderColor="{Binding SelectedBrand.SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='White'}"
+                    BorderWidth="2"
+                    BackgroundColor="Transparent"
+                    TextColor="{Binding SelectedBrand.TextColor, Converter={StaticResource StringToColorConverter}, FallbackValue='White'}"
+                    Padding="15"
+                    VerticalOptions="Center"
+                    ToolTipProperties.Text="About this app" />
+
+            <Button Grid.Column="3"
+                    Text="Settings" 
+                    Command="{Binding NavigateToSettingsCommand}"
+                    FontSize="18"
+                    BorderColor="{Binding SelectedBrand.SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='White'}"
+                    BorderWidth="2"
+                    BackgroundColor="Transparent"
+                    TextColor="{Binding SelectedBrand.TextColor, Converter={StaticResource StringToColorConverter}, FallbackValue='White'}"
+                    Padding="15"
+                    Margin="10,0,0,0"
+                    VerticalOptions="Center"
+                    ToolTipProperties.Text="Settings" />
+        </Grid>
+
+        <!-- Main Content in 4 Columns -->
+        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="20">
+
+            <!-- Column 1: Event Selection -->
+            <VerticalStackLayout Grid.Column="0" Spacing="15" WidthRequest="140">
+                <!-- Message when no events are loaded -->
+                <Border Padding="10" 
+                        BackgroundColor="LightYellow" 
+                        StrokeShape="RoundRectangle 5"
+                        IsVisible="{Binding Brands.Count, Converter={StaticResource IsZeroConverter}}">
+                    <Label Text="No events loaded! Go to Settings (⚙) and click Reset button." 
+                           FontSize="11" 
+                           TextColor="Red"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap" />
+                </Border>
+
+                <CollectionView ItemsSource="{Binding Brands}"
+                                SelectionMode="None"
+                                HeightRequest="500">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Brand">
+                            <Border Margin="0" 
+                                    Padding="0" 
+                                    StrokeShape="RoundRectangle 10"
+                                    x:Name="BrandBorder"
+                                    BackgroundColor="{Binding BackgroundColor, FallbackValue='#2b233d'}"
+                                    Stroke="{Binding SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='#888888'}"
+                                    StrokeThickness="6"                                    
+                                    WidthRequest="140"
+                                    HeightRequest="140">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectBrandCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <!-- Visual feedback with triggers -->
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border" 
+                                                 Binding="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectedBrand.Name}" 
+                                                 Value="{Binding Name}">
+                                        <Setter Property="StrokeThickness" Value="5" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                                <Grid RowDefinitions="*,Auto" Padding="10">
+                                    <!-- Logo Image with fallback -->
+                                    <Image Grid.Row="0" 
+                                           Source="{Binding LogoFileName, FallbackValue='dotnet_bot.png'}" 
+                                           HeightRequest="70" 
+                                           WidthRequest="70"
+                                           Aspect="AspectFit" 
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center" />
+                                    <!-- Brand name label with branded background -->
+                                    <Border Grid.Row="1"
+                                            BackgroundColor="{Binding PrimaryColor, FallbackValue='#2196F3'}"
+                                            Opacity="0.9"
+                                            StrokeThickness="0"
+                                            Margin="0,10,0,0"
+                                            Padding="5,3"
+                                            StrokeShape="RoundRectangle 5">
+                                        <Label Text="{Binding Name, FallbackValue='Brand'}" 
+                                               FontSize="12"
+                                               HorizontalOptions="Center"
+                                               TextColor="{Binding SecondaryColor, FallbackValue='White'}"
+                                               FontAttributes="Bold" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <!-- Column 2: Location Selection -->
+            <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" RowSpacing="10">
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding BrandName, Converter={StaticResource EventTypeToLabelConverter}}" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#2196F3'}"
+                           VerticalOptions="Center" />
+                    <Button Grid.Column="1"
+                            Text="+"
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            Command="{Binding AddLocationDialogCommand}"
+                            BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#4CAF50'}"
+                            TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"
+                            BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"
+                            BorderWidth="3"
+                            WidthRequest="40"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            Padding="0"
+                            ToolTipProperties.Text="Add new location" />
+                </Grid>
+
+                <!-- Search Box -->
+                <Border Grid.Row="1"
+                        Padding="8"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 8" Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue=DarkGray}">                   
+                    <Entry Placeholder="Search locations..." 
+                           Text="{Binding LocationSearchText}"
+                           ClearButtonVisibility="WhileEditing"
+                           FontSize="14" />
+                </Border>
+
+                <Border Grid.Row="2"
+                        StrokeThickness="2"
+                        StrokeShape="RoundRectangle 8" Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue=DarkGray}">
+                    <CollectionView ItemsSource="{Binding FilteredLocations}" 
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedLocation}"
+                                    VerticalScrollBarVisibility="Always">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="{x:Type x:String}">
+                                <SwipeView>
+                                    <SwipeView.RightItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Delete" 
+                                                       BackgroundColor="Red"
+                                                       Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteLocationCommand}"
+                                                       CommandParameter="{Binding .}" />
+                                        </SwipeItems>
+                                    </SwipeView.RightItems>
+                                    <Border Margin="5" 
+                                            Padding="10" 
+                                            StrokeShape="RoundRectangle 8"
+                                            StrokeThickness="2">
+                                        <Border.BackgroundColor>
+                                            <MultiBinding Converter="{StaticResource SelectedItemBackgroundConverter}">
+                                                <Binding Path="." />
+                                                <Binding Path="BindingContext.SelectedLocation" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                            </MultiBinding>
+                                        </Border.BackgroundColor>
+                                        <Border.Stroke>
+                                            <MultiBinding Converter="{StaticResource FavoriteBorderColorConverter}">
+                                                <Binding Path="." />
+                                                <Binding Path="BindingContext.SelectedLocation" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                            </MultiBinding>
+                                        </Border.Stroke>
+                                        <Grid ColumnDefinitions="*,Auto,Auto">
+                                            <Label Grid.Column="0" 
+                                                   Text="{Binding ., FallbackValue='Location'}"                                                          
+                                                   FontSize="16"
+                                                   VerticalOptions="Center"
+                                                   TextDecorations="None">
+                                                <Label.TextColor>
+                                                    <MultiBinding Converter="{StaticResource SelectedLocationTextColorConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="BindingContext.SelectedLocation" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                        <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                    </MultiBinding>
+                                                </Label.TextColor>
+                                            </Label>
+                                            <Label Grid.Column="1"
+                                                   FontSize="18"                                                   
+                                                   Padding="5"
+                                                   VerticalOptions="Center">
+
+                                                <Label.TextColor>
+                                                    <MultiBinding Converter="{StaticResource SelectedLocationTextColorConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="BindingContext.SelectedLocation" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                        <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                    </MultiBinding>
+                                                </Label.TextColor>
+
+                                                <Label.Text>
+                                                    <MultiBinding Converter="{StaticResource FavoriteStarTextConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleFavoriteCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <Label Grid.Column="2"
+                                                   Text="🗑️" 
+                                                   FontSize="18"                                                   
+                                                   Padding="5"
+                                                   VerticalOptions="Center">
+
+                                                <Label.TextColor>
+                                                    <MultiBinding Converter="{StaticResource SelectedLocationTextColorConverter}">
+                                                        <Binding Path="." />
+                                                        <Binding Path="BindingContext.SelectedLocation" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                        <Binding Path="BindingContext.SelectedBrand" Source="{RelativeSource AncestorType={x:Type ContentPage}}" />
+                                                    </MultiBinding>
+                                                </Label.TextColor>
+
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteLocationCommand}"
+                                                                          CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </Grid>
+                                    </Border>
+                                </SwipeView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+            </Grid>
+
+            <!-- Column 3: Source Location, File Count & Sample Filename -->
+            <VerticalStackLayout Grid.Column="2" Spacing="12" WidthRequest="350">
+
+                <!-- Source Location -->
+                <Border Padding="15" StrokeShape="RoundRectangle 8" Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue=DarkGray}">
+                    <VerticalStackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="Source Location" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold"
+                                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}"
+                                   VerticalOptions="Center" />
+                            <Button Grid.Column="1"
+                                    Text="Browse"
+                                    Command="{Binding BrowseSourceCommand}"
+                                    FontSize="12"
+                                    BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#4CAF50'}"
+                                    TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"
+                                    Padding="10,5"
+                                    CornerRadius="4"
+                                    BorderWidth="3"
+                                    BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"                                    
+                                    ToolTipProperties.Text="Browse for source folder" />
+                        </Grid>
+                        <Label Text="{Binding SourceFolder}" 
+                               FontSize="12" 
+                               TextColor="Gray"
+                               LineBreakMode="TailTruncation" />                        
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Image Count -->
+                <Border Padding="15" StrokeShape="RoundRectangle 8" Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue=DarkGray}">                    
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Image Count" 
+                               FontSize="14" 
+                               FontAttributes="Bold"
+                               TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+                        <Label Text="{Binding JpgFileCount, StringFormat='JPG Files: {0}'}" 
+                               FontSize="16" 
+                               FontAttributes="Bold" />
+                        <Label Text="{Binding RawFileCount, StringFormat='RAW Files: {0}'}" 
+                               FontSize="16" 
+                               FontAttributes="Bold" />
+                        <Button Text="Refresh Count" 
+                                Command="{Binding RefreshFilesCommand}"
+                                BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#2196F3'}"
+                                BorderWidth="3"
+                                BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"
+                                TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#EEEEEE'}"
+                                Margin="0,10,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Sample Filename -->
+                <Border Padding="12" StrokeShape="RoundRectangle 8" Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue=DarkGray}">                    
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Sample Filename:" 
+                               FontSize="12" 
+                               TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}" 
+                               FontAttributes="Bold" />
+                        <Label Text="{Binding SampleFileName}" 
+                               FontSize="11" 
+                               TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}"
+                               LineBreakMode="WordWrap" />
+
+                        <!-- Image Processing Settings -->
+                        <BoxView HeightRequest="1" Color="{Binding SelectedBrand.PrimaryColor, FallbackValue='#2196F3'}" Opacity="0.3" Margin="0,5" />
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*" RowSpacing="3" IsVisible="{Binding ConvertImages}">
+                            <Label Grid.Row="0" Grid.Column="0" 
+                                   Text="Resize Longest Side to :" 
+                                   FontSize="11" 
+                                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}" />
+                            <Label Grid.Row="0" Grid.Column="1" 
+                                   Text="{Binding ImageResizeSize, StringFormat='{0} pixels'}" 
+                                   FontSize="11" 
+                                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}"
+                                   FontAttributes="Bold" 
+                                   HorizontalOptions="End" />
+
+                            <Label Grid.Row="1" Grid.Column="0" 
+                                   Text="JPG Compression:" 
+                                   FontSize="11" 
+                                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}" />
+                            <Label Grid.Row="1" Grid.Column="1" 
+                                   Text="{Binding JpgCompression, StringFormat='{0}%'}" 
+                                   FontSize="11" 
+                                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#1976D2'}"
+                                   FontAttributes="Bold" 
+                                   HorizontalOptions="End" />
+                        </Grid>
+
+                        <Label Text="No resizing and No Compression"
+                               FontSize="11"
+                               FontAttributes="Bold"
+                               TextColor="{Binding SelectedBrand.PrimaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='#1976D2'}"
+                               IsVisible="{Binding ShowNoResizeNoCompression}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Progress and Status -->
+                <VerticalStackLayout Spacing="2">
+                    <ProgressBar Progress="{Binding ProgressValue}"
+                                 ProgressColor="{Binding SelectedBrand.SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='#4CAF50'}" />
+
+                    <Label Text="{Binding StatusMessage}" 
+                           FontSize="12" 
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap"
+                           MinimumHeightRequest="10" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3" VerticalOptions="Center" Spacing="4">
+                    <Button Text="Process Images" 
+                            Command="{Binding ProcessImagesCommand}"
+                            IsEnabled="{Binding IsProcessing, Converter={StaticResource InverseBoolConverter}}"
+                            FontSize="18"
+                            FontAttributes="Bold"                            
+                            HeightRequest="80"
+                            BackgroundColor="{Binding SelectedBrand.SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='#FFFFFF'}"
+                            TextColor="{Binding SelectedBrand.PrimaryColor, Converter={StaticResource StringToColorConverter},FallbackValue='#4CAF50'}"
+                            BorderColor="{Binding SelectedBrand.PrimaryColor, Converter={StaticResource StringToColorConverter},FallbackValue='#4CAF50'}"
+                            BorderWidth="3"
+                            CornerRadius="25"
+                            Padding="15" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+         
+           
+
+           
+
+        </Grid>
+    </Grid>
+
+</ContentPage>

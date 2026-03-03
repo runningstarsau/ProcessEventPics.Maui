@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ProcessEventPics.Maui.ViewModels"
+             xmlns:converters="clr-namespace:ProcessEventPics.Maui.Converters"
+             x:Class="ProcessEventPics.Maui.AboutPage"
+             x:DataType="viewmodels:MainViewModel"
+             Title="">
+
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+        <!-- Header with Back Button and Title - Running Stars Default Colors -->
+        <Grid Grid.Row="0" 
+              Padding="20,10"
+              BackgroundColor="#60a5fa">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Text="←"
+                    Clicked="OnBackClicked"
+                    FontSize="32"
+                    FontAttributes="Bold"
+                    BackgroundColor="Transparent"
+                    TextColor="#FFFF00"
+                    Padding="10,0"
+                    VerticalOptions="Center"
+                    ToolTipProperties.Text="Back to Main Page" />
+
+            <Label Grid.Column="1"
+                   Text="About This App"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#FFFF00"
+                   VerticalOptions="Center"
+                   Margin="10,0,0,0" />
+        </Grid>
+
+        <!-- Main Content -->
+        <ScrollView Grid.Row="1" Padding="40">
+            <VerticalStackLayout Spacing="30" MaximumWidthRequest="800" HorizontalOptions="Center">
+
+                <!-- Running Stars Logo -->
+                <Border StrokeShape="RoundRectangle 15"
+                        BackgroundColor="White"
+                        Stroke="#1e3a8a"
+                        StrokeThickness="0"
+                        Margin="25"                        
+                        HorizontalOptions="Center">
+                    <Image Source="runningstars_icon.png"
+                           HeightRequest="150"
+                           WidthRequest="150"
+                           Aspect="AspectFit"
+                           HorizontalOptions="Center" />
+                </Border>
+
+                <!-- App Title -->
+
+
+              <Grid RowDefinitions="*,*" Padding="0">
+                <Grid Grid.Row="0"
+                    Padding="20,10"
+                    BackgroundColor="#60a5fa">
+
+
+                  <Label Text="Process Event Pics"
+                         FontSize="32"
+                         FontAttributes="Bold"
+                         HorizontalTextAlignment="Center"
+                         TextColor="#FFFF00" />
+                </Grid>
+                <Grid Grid.Row="1"
+                       Padding="20,10"
+                    BackgroundColor="#60a5fa">
+                  <Label
+                        Text="By Running Stars"
+                        HorizontalTextAlignment="Center"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        TextColor="#FFFF00"
+                        VerticalOptions="Center"/>
+                </Grid>
+              </Grid>
+
+                <!-- Main Description -->
+                <Border Padding="25"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="White"
+                        Stroke="#1e3a8a"
+                        StrokeThickness="2">
+                    <VerticalStackLayout Spacing="15">
+                        <Label Text="About This Application"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#60a5fa" />
+
+                        <Label FontSize="16"
+                               LineBreakMode="WordWrap"
+                               TextColor="#1e3a8a">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="This app has been created by " />
+                                    <Span Text="Running Stars" FontAttributes="Bold" />
+                                    <Span Text=" to process event pictures and prepare them for importing into Facebook Albums.&#x0a;&#x0a;" />
+                                    <Span Text="The application streamlines the workflow of organizing, renaming, and optimizing event photos, making it easier to share memorable moments with your community." />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Contact Information Section -->
+                <Border Padding="25"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="White"
+                        Stroke="#1e3a8a"
+                        StrokeThickness="2">
+                    <VerticalStackLayout Spacing="20">
+                        <Label Text="Contact Information"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="#60a5fa" />
+
+                        <!-- Website -->
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                            <Border Grid.Column="0"
+                                    WidthRequest="50"
+                                    HeightRequest="50"
+                                    StrokeShape="RoundRectangle 25"
+                                    BackgroundColor="#1e3a8a"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center">
+                                <Label Text="🌐"
+                                       FontSize="28"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="5">
+                                <Label Text="Website"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       FontAttributes="Bold" />
+                                <Label Text="https://runningstars.org.au"
+                                       FontSize="16"
+                                       TextColor="#60a5fa"
+                                       TextDecorations="Underline">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnWebsiteTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!-- Divider -->
+                        <BoxView HeightRequest="1" 
+                                 Color="#1e3a8a" 
+                                 Opacity="0.3" />
+
+                        <!-- Email -->
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                            <Border Grid.Column="0"
+                                    WidthRequest="50"
+                                    HeightRequest="50"
+                                    StrokeShape="RoundRectangle 25"
+                                    BackgroundColor="#1e3a8a"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center">
+                                <Label Text="✉️"
+                                       FontSize="28"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </Border>
+
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="5">
+                                <Label Text="Email"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       FontAttributes="Bold" />
+                                <Label Text="info@runningstars.org.au"
+                                       FontSize="16"
+                                       TextColor="#60a5fa"
+                                       TextDecorations="Underline">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnEmailTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Footer -->
+                <Label Text="© 2026 Running Stars Healthy Living Pty. All rights reserved."
+                       FontSize="12"
+                       TextColor="Gray"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,20,0,0" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

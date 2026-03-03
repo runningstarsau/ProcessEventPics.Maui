@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ProcessEventPics.Maui.ViewModels"
+             xmlns:models="clr-namespace:ProcessEventPics.Maui.Models"
+             xmlns:converters="clr-namespace:ProcessEventPics.Maui.Converters"
+             x:Class="ProcessEventPics.Maui.SettingsPage"
+             x:DataType="viewmodels:MainViewModel"
+             BackgroundColor="White"
+             Title="">
+
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="StringToColorConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+        <!-- Header with Back Button and Title -->
+        <Grid Grid.Row="0" 
+              Padding="20,10"
+              BackgroundColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#2196F3'}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Text="←" 
+                    Clicked="OnBackClicked"
+                    FontSize="28"
+                    BackgroundColor="Transparent"
+                    TextColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='White'}"
+                    Padding="10"
+                    VerticalOptions="Center" />
+
+            <Label Grid.Column="1"
+                   Text="Process Event Pics - Settings"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='White'}"
+                   VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20" Spacing="15">
+
+                <!-- Global Configuration -->
+                <Label Text="Global Configuration" 
+                       FontSize="20" 
+                       FontAttributes="Bold"
+                       TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto" ColumnSpacing="10" RowSpacing="10">
+                <Label Grid.Row="0" Grid.Column="0" Text="Source Folder:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Entry Grid.Row="0" Grid.Column="1" Text="{Binding SourceFolder}" />
+                <Button Grid.Row="0" Grid.Column="2" 
+                        Text="Browse" 
+                        Command="{Binding BrowseSourceCommand}"
+                        BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#4CAF50'}"
+                        TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='White'}"
+                        BorderWidth="2"
+                        BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#4CAF50'}" />
+                <Button Grid.Row="0" Grid.Column="3" 
+                        Text="Find Camera" 
+                        Command="{Binding FindCameraCommand}"
+                        BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#4CAF50'}"
+                        TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='White'}"
+                        BorderWidth="2"
+                        BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#4CAF50'}" />
+            </Grid>
+
+            <BoxView HeightRequest="1" Color="{Binding SelectedBrand.TertiaryColor, FallbackValue='LightGray'}" Margin="0,10" />
+
+            <!-- Processing Options -->
+            <Label Text="Processing Options" 
+                   FontSize="18" 
+                   FontAttributes="Bold"
+                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+
+            <HorizontalStackLayout Padding="20" Spacing="15">
+                <Border Padding="20">
+                    <HorizontalStackLayout Spacing="10" VerticalOptions="Start">
+                        <CheckBox x:Name="SaveToEventPhotosFullSizeCheck" IsChecked="{Binding SaveToEventPhotosFullSize}" />
+                        <Label Text="Save to EventPhotosFullSize folder" VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSaveToEventPhotosFullSizeTapped" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </Border>
+
+                <Border Padding="20">
+                    <VerticalStackLayout Spacing="10" VerticalOptions="Start" HorizontalOptions="Start">
+                        <HorizontalStackLayout Spacing="10" Opacity="{Binding CompressionOptionOpacity}" VerticalOptions="Start">
+                            <CheckBox x:Name="ConvertImagesCheck" IsChecked="{Binding ConvertImages}" IsEnabled="{Binding IsCompressionAvailable}" />
+                            <Label Text="Convert and compress for Facebook" VerticalOptions="Center" Opacity="{Binding IsCompressionAvailable}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnConvertImagesTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <Label Text="Not available for Mac"
+                           FontSize="12"
+                           TextColor="Gray"
+                           Margin="32,0,0,0"
+                           IsVisible="{Binding IsCompressionNotAvailableForMac}" />
+
+                        <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10" Margin="0,10,0,0" IsVisible="{Binding IsCompressionOptionEnabled}" >
+                            <Label Grid.Row="0" Grid.Column="0" Text="Image Resize Size (pixels):" VerticalOptions="Center" IsVisible="{Binding IsCompressionOptionEnabled}"/>
+                            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding ImageResizeSize}" Keyboard="Numeric" Placeholder="2048" IsVisible="{Binding IsCompressionOptionEnabled}"/>
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="JPG Compression (%):" VerticalOptions="Center" IsVisible="{Binding IsCompressionOptionEnabled}"/>
+                            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding JpgCompression}" Keyboard="Numeric" Placeholder="85" IsVisible="{Binding IsCompressionOptionEnabled}"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+
+
+                </Border>
+            </HorizontalStackLayout>
+
+            
+
+            <BoxView HeightRequest="1" Color="{Binding SelectedBrand.TertiaryColor, FallbackValue='LightGray'}" Margin="0,10" />
+
+
+
+            <!-- Event-Specific Settings -->
+            <Label Text="Events" 
+                   FontSize="20" 
+                   FontAttributes="Bold"
+                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+
+            <!-- Brand Selector -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+                <Label Grid.Column="0" Text="Select Event to Configure:" FontSize="14" TextColor="Gray" VerticalOptions="Center" />
+                <Button Grid.Column="1"
+                        Text="Reset"
+                        FontSize="12"
+                        Command="{Binding ResetToDefaultsCommand}"
+                        BackgroundColor="#FF9800"
+                        TextColor="White"
+                        Padding="10,5"
+                        CornerRadius="5"
+                        ToolTipProperties.Text="Reset all events to defaults" />
+                <Button Grid.Column="2"
+                        Text="+"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        Command="{Binding AddBrandDialogCommand}"
+                        BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#4CAF50'}"
+                        TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='White'}"
+                        BorderWidth="3"
+                        BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#4CAF50'}"
+                        WidthRequest="40"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Padding="0"
+                        ToolTipProperties.Text="Add new event" />
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding Brands}"
+                            SelectionMode="None"
+                            HeightRequest="150">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Brand">
+                        <Border Margin="5" 
+                            Padding="0" 
+                            StrokeShape="RoundRectangle 10"
+                            x:Name="BrandBorder"
+                            BackgroundColor="{Binding BackgroundColor, FallbackValue='#2b233d'}"
+                            Stroke="{Binding SecondaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='#888888'}"
+                            StrokeThickness="6"                                    
+                            WidthRequest="140"
+                            HeightRequest="140">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectBrandCommand}"
+                                CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                            <!-- Visual feedback with triggers -->
+                            <Border.Triggers>
+                                <DataTrigger TargetType="Border" 
+                                    Binding="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectedBrand.Name}" 
+                                    Value="{Binding Name}">                                    
+                                    <Setter Property="StrokeThickness" Value="5" />
+                                </DataTrigger>
+                            </Border.Triggers>
+                            <Grid RowDefinitions="*,Auto" Padding="10">
+                                <!-- Logo Image with fallback -->
+                                <Image Grid.Row="0" 
+                                   Source="{Binding LogoFileName, FallbackValue='dotnet_bot.png'}" 
+                                   HeightRequest="70" 
+                                   WidthRequest="70"
+                                   Aspect="AspectFit" 
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                                <!-- Brand name label with branded background -->
+                                <Border Grid.Row="1"
+                                    BackgroundColor="{Binding PrimaryColor, FallbackValue='#2196F3'}"
+                                    Opacity="0.9"
+                                    StrokeThickness="0"
+                                    Margin="0,10,0,0"
+                                    Padding="5,3"
+                                    StrokeShape="RoundRectangle 5">
+                                    <Label Text="{Binding Name, FallbackValue='Brand'}" 
+                                       FontSize="12"
+                                       HorizontalOptions="Center"
+                                       TextColor="{Binding SecondaryColor, FallbackValue='White'}"
+                                       FontAttributes="Bold" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Selected Brand Settings -->
+            <Border Margin="0,10" Padding="15" StrokeShape="RoundRectangle 8"
+                    Stroke="{Binding SelectedBrand.TertiaryColor, Converter={StaticResource StringToColorConverter}, FallbackValue='LightGray'}"
+                    StrokeThickness="2"
+                    IsVisible="{Binding SelectedBrand, Converter={StaticResource NotNullConverter}}">
+                <VerticalStackLayout Spacing="15">
+
+                    <!-- Brand Header -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                        <Image Grid.Column="0" 
+                               Source="{Binding SelectedBrand.LogoFileName}" 
+                               HeightRequest="50" 
+                               WidthRequest="50"
+                               Aspect="AspectFit" />
+                        <Label Grid.Column="1" 
+                               Text="{Binding SelectedBrand.Name}" 
+                               FontSize="20" 
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+                        <Button Grid.Column="2"
+                                Text="Delete Event"
+                                Command="{Binding DeleteBrandCommand}"
+                                BackgroundColor="#DC3545"
+                                TextColor="White"
+                                FontSize="12"
+                                Padding="10,5"
+                                CornerRadius="5"
+                                ToolTipProperties.Text="Delete this event and all its locations" />
+                    </Grid>
+
+                    <!-- Logo File -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label Grid.Column="0" Text="Logo File:" VerticalOptions="Center" />
+                        <Entry Grid.Column="1" Text="{Binding SelectedBrand.LogoFileName}" Placeholder="e.g., parkrun_icon.png" />
+                    </Grid>
+
+                    <!-- Folders -->
+                    <Label Text="Folders" 
+                           FontSize="16" 
+                           FontAttributes="Bold" 
+                           Margin="0,5,0,0"
+                           TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label Grid.Column="0" Text="EventPhotosFullSize:" VerticalOptions="Center" />
+                        <Entry Grid.Column="1" Text="{Binding SelectedBrand.EventPhotosFullSizeFolder}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label Grid.Column="0" Text="EventPhotosCompressed:" VerticalOptions="Center" />
+                        <Entry Grid.Column="1" Text="{Binding SelectedBrand.EventPhotosCompressedFolder}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <Label Grid.Column="0" Text="RAW:" VerticalOptions="Center" />
+                        <Entry Grid.Column="1" Text="{Binding SelectedBrand.RawFolder}" />
+                    </Grid>
+
+                    <!-- File Naming Preference -->
+                    <Label Text="File Naming" 
+                           FontSize="16" 
+                           FontAttributes="Bold" 
+                           Margin="0,10,0,0"
+                           TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+
+                    <HorizontalStackLayout Spacing="10">
+                        <CheckBox IsChecked="{Binding SelectedBrand.LocationFirstInFilename}" />
+                        <Label Text="Location first in filename" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout Spacing="3" Margin="25,5,0,0">
+                        <Label Text="Example formats:" FontSize="12" TextColor="Gray" />
+                        <Label FontSize="11" TextColor="Gray" LineBreakMode="WordWrap">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="✓ Checked: " />
+                                    <Span Text="{Binding SelectedBrand.Name, StringFormat='Location_{0}_2026_02_28_0001.jpg'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label FontSize="11" TextColor="Gray" LineBreakMode="WordWrap">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="✗ Unchecked: " />
+                                    <Span Text="{Binding SelectedBrand.Name, StringFormat='{0}_Location_2026_02_28_0001.jpg'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </VerticalStackLayout>
+
+                    <!-- Brand Theme Colors -->
+                    <Label Text="Theme Colors" 
+                           FontSize="16" 
+                           FontAttributes="Bold" 
+                           Margin="0,20,0,0"
+                           TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+                    <Label Text="Enter colors in hex format (e.g., #2b233d or #ffa300)" FontSize="12" TextColor="Gray" />
+
+                    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="10" RowSpacing="10">
+                        <!-- Primary Color -->
+                        <Label Grid.Row="0" Grid.Column="0" Text="Primary:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="0" Text="{Binding SelectedBrand.PrimaryColor}" Placeholder="#2196F3" />
+                        <BoxView Grid.Row="2" Grid.Column="0" BackgroundColor="{Binding SelectedBrand.PrimaryColor}" CornerRadius="5" HeightRequest="40" />
+
+                        <!-- Secondary Color -->
+                        <Label Grid.Row="0" Grid.Column="1" Text="Secondary:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="1" Text="{Binding SelectedBrand.SecondaryColor}" Placeholder="#4CAF50" />
+                        <BoxView Grid.Row="2" Grid.Column="1" BackgroundColor="{Binding SelectedBrand.SecondaryColor}" CornerRadius="5" HeightRequest="40" />
+
+                        <!-- Tertiary Color -->
+                        <Label Grid.Row="0" Grid.Column="2" Text="Tertiary:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="2" Text="{Binding SelectedBrand.TertiaryColor}" Placeholder="#FFC107" />
+                        <BoxView Grid.Row="2" Grid.Column="2" BackgroundColor="{Binding SelectedBrand.TertiaryColor}" CornerRadius="5" HeightRequest="40" />
+
+                        <!-- Background Color -->
+                        <Label Grid.Row="0" Grid.Column="3" Text="Background:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="3" Text="{Binding SelectedBrand.BackgroundColor}" Placeholder="#FFFFFF" />
+                        <BoxView Grid.Row="2" Grid.Column="3" BackgroundColor="{Binding SelectedBrand.BackgroundColor}" CornerRadius="5" HeightRequest="40" />
+
+                        <!-- Foreground Color -->
+                        <Label Grid.Row="0" Grid.Column="4" Text="Foreground:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="4" Text="{Binding SelectedBrand.ForegroundColor}" Placeholder="#000000" />
+                        <BoxView Grid.Row="2" Grid.Column="4" BackgroundColor="{Binding SelectedBrand.ForegroundColor}" CornerRadius="5" HeightRequest="40" />
+
+                        <!-- Text Color -->
+                        <Label Grid.Row="0" Grid.Column="5" Text="Text:" VerticalOptions="Center" FontAttributes="Bold" HorizontalOptions="Center" />
+                        <Entry Grid.Row="1" Grid.Column="5" Text="{Binding SelectedBrand.TextColor}" Placeholder="#FFFFFF" />
+                        <BoxView Grid.Row="2" Grid.Column="5" BackgroundColor="{Binding SelectedBrand.TextColor}" CornerRadius="5" HeightRequest="40" />
+                    </Grid>
+
+                    <!-- Color Helper -->
+                    <Border Padding="10" Margin="0,10,0,0" BackgroundColor="#F0F8FF" StrokeShape="RoundRectangle 6">
+                        <Border.Stroke>
+                            <SolidColorBrush Color="#B0C4DE" />
+                        </Border.Stroke>
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="💡 Color Usage Guide:" FontSize="13" FontAttributes="Bold" />
+                            <Label FontSize="11" TextColor="#333" LineBreakMode="WordWrap">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="• Primary: Main header backgrounds, borders&#10;" />
+                                        <Span Text="• Secondary: Buttons and accent elements&#10;" />
+                                        <Span Text="• Tertiary: Highlights and tertiary elements&#10;" />
+                                        <Span Text="• Background: Brand card backgrounds&#10;" />
+                                        <Span Text="• Foreground: Text on backgrounds&#10;" />
+                                        <Span Text="• Text: Text on primary colored elements" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Action Buttons -->
+                    <HorizontalStackLayout Spacing="10" Margin="0,10,0,0" HorizontalOptions="End">
+                        <Button Text="Reset to Defaults" 
+                                Command="{Binding ResetBrandColorsCommand}"
+                                BackgroundColor="#6c757d"
+                                TextColor="White"
+                                FontSize="14"
+                                Padding="15,8"
+                                CornerRadius="5" />
+                        <Button Text="Save Changes" 
+                                Clicked="OnSaveClicked"
+                                BackgroundColor="{Binding SelectedBrand.SecondaryColor, FallbackValue='#28a745'}"
+                                TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='White'}"
+                                BorderWidth="2"
+                                BorderColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='#28a745'}"
+                                FontSize="14"
+                                Padding="15,8"
+                                CornerRadius="5" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+
+            <BoxView HeightRequest="1" Color="{Binding SelectedBrand.TertiaryColor, FallbackValue='LightGray'}" Margin="0,10" />
+
+
+            <!-- Day of Week Event Mappings -->
+            <Label Text="Default Event Days" 
+                   FontSize="20" 
+                   FontAttributes="Bold"
+                   TextColor="{Binding SelectedBrand.PrimaryColor, FallbackValue='Black'}" />
+            <Label Text="Select which event to use by default for each day of the week:" FontSize="14" TextColor="Gray" />
+
+            <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowDefinitions="Auto,*" ColumnSpacing="10" RowSpacing="8" Margin="0,10,0,0">
+                <Label Grid.Row="0" Grid.Column="0" Text="Monday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="0" 
+             x:Name="MondayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding MondayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="1" Text="Tuesday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="1" 
+             x:Name="TuesdayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding TuesdayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="2" Text="Wednesday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="2" 
+             x:Name="WednesdayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding WednesdayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="3" Text="Thursday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="3" 
+             x:Name="ThursdayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding ThursdayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="4" Text="Friday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="4" 
+             x:Name="FridayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding FridayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="5" Text="Saturday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="5" 
+             x:Name="SaturdayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding SaturdayBrand, Mode=TwoWay}" />
+
+                <Label Grid.Row="0" Grid.Column="6" Text="Sunday:" VerticalOptions="Center" FontAttributes="Bold" />
+                <Picker Grid.Row="1" Grid.Column="6" 
+             x:Name="SundayPicker"
+             ItemsSource="{Binding Brands}"
+             ItemDisplayBinding="{Binding Name}"
+             SelectedItem="{Binding SundayBrand, Mode=TwoWay}" />
+            </Grid>
+
+                            <BoxView HeightRequest="1" Color="{Binding SelectedBrand.TertiaryColor, FallbackValue='LightGray'}" Margin="0,10" />
+
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Grid>
+
+            </ContentPage>
