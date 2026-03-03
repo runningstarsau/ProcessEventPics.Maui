@@ -27,12 +27,12 @@ jobs:
       run: dotnet build -c Release -f:net10.0-windows10.0.19041.0
       
     - name: Publish
-      run: dotnet publish -c Release -f:net10.0-windows10.0.19041.0 /p:GenerateAppsxPackageOnBuild=true
+      run: dotnet publish -c Release -f net10.0-windows10.0.19041.0 /p:WindowsPackageType=MSIX /p:AppxPackage=true
           
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: MSIX Package
-        path: ./bin/Release/net10.0-windows10.0.19041.0/win10-x64/publish/**/*.msix
+        path: ./AppPackages/**/*.msix
         
