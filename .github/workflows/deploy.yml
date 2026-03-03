@@ -1,9 +1,9 @@
 name: Deploy
 
-  on:
+on:
   push:
     branches:
-  - master
+    - main
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-         dotnet-version: 10.0.x
+        dotnet-version: 10.0.x
 
     - name: Install MAUI workloads
       run: dotnet workload install maui
