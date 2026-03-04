@@ -4,16 +4,17 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:uap18="http://schemas.microsoft.com/appx/manifest/uap/windows10/18"
+  IgnorableNamespaces="uap rescap uap18">
 
-  <Identity Name="maui-package-name-placeholder" Publisher="CN=User Name" Version="0.0.0.0" />
+  <Identity Name="RunningStars.ProcessEventPics" Publisher="CN=2193A4B7-B579-4330-B4F2-9644D37BA8D9" Version="1.1.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="B2E12CAD-3BE7-4313-BCD8-AE629B3B7BAA" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>$placeholder$</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
-    <Logo>$placeholder$.png</Logo>
+    <DisplayName>Process Event Pics</DisplayName>
+    <PublisherDisplayName>Running Stars</PublisherDisplayName>	
+    <Logo>Resources\Images\Store\runningstars_process_event_pics_package.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -26,15 +27,22 @@
   </Resources>
 
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$" uap18:RuntimeBehavior="windowsApp" uap18:TrustLevel="appContainer">
       <uap:VisualElements
-        DisplayName="$placeholder$"
-        Description="$placeholder$"
-        Square150x150Logo="$placeholder$.png"
-        Square44x44Logo="$placeholder$.png"
+        DisplayName="Process Event Pics"
+        Description="Process Event Pics is an app which is used to convert JPG Files from a Flash Card from a DSLR to Copy and Convert them ready to publish to Facebook and organise them on your hard drive related to the date of the event."
+        Square150x150Logo="Resources\Images\Store\runningstars_process_event_pics_medium.png"
+        Square44x44Logo="Resources\Images\Store\runningstars_process_event_pics_app.png"
         BackgroundColor="transparent">
-        <uap:DefaultTile Square71x71Logo="$placeholder$.png" Wide310x150Logo="$placeholder$.png" Square310x310Logo="$placeholder$.png" />
-        <uap:SplashScreen Image="$placeholder$.png" />
+        <uap:DefaultTile Square71x71Logo="Resources\Images\Store\runningstars_process_event_pics_small.png" Wide310x150Logo="Resources\Images\Store\runningstars_process_event_pics_wide.png" Square310x310Logo="Resources\Images\Store\runningstars_process_event_pics_large.png"  ShortName="EventPics">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Resources\Images\Store\runningstars_process_event_pics_splash.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
+        <uap:LockScreen BadgeLogo="Resources\Images\Store\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
     </Application>
   </Applications>

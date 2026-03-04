@@ -45,47 +45,85 @@
         <ScrollView Grid.Row="1" Padding="40">
             <VerticalStackLayout Spacing="30" MaximumWidthRequest="800" HorizontalOptions="Center">
 
-                <!-- Running Stars Logo -->
+
+
+
+                <!-- Running Stars Photographer Volunteer -->
                 <Border StrokeShape="RoundRectangle 15"
-                        BackgroundColor="White"
-                        Stroke="#1e3a8a"
-                        StrokeThickness="0"
-                        Margin="25"                        
-                        HorizontalOptions="Center">
-                    <Image Source="runningstars_icon.png"
-                           HeightRequest="150"
-                           WidthRequest="150"
-                           Aspect="AspectFit"
-                           HorizontalOptions="Center" />
+               BackgroundColor="White"
+               Stroke="#1e3a8a"
+               StrokeThickness="0"
+               Margin="25"                        
+               HorizontalOptions="Center">
+                    <Image Source="runningstars_volunteer_photographer.jpg"
+                  HeightRequest="300"
+                  WidthRequest="300"
+                  Aspect="AspectFit"
+                  HorizontalOptions="Center" />
                 </Border>
 
-                <!-- App Title -->
+
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" Padding="0">
+
+                    <Grid Grid.Row="0" 
+                          Grid.Column="0"
+                          Grid.RowSpan="1"
+                          Padding="10"
+                          Margin="15"
+                          BackgroundColor="white">
 
 
-              <Grid RowDefinitions="*,*" Padding="0">
-                <Grid Grid.Row="0"
-                    Padding="20,10"
-                    BackgroundColor="#60a5fa">
+                        <!-- Running Stars Logo -->
+                        <Border StrokeShape="RoundRectangle 15"
+                          BackgroundColor="White"
+                          Stroke="#1e3a8a"
+                          StrokeThickness="0"                          
+                          HorizontalOptions="Center">
+                            <Image Source="runningstars_icon.png"
+                             HeightRequest="100"
+                             WidthRequest="100"
+                             Aspect="AspectFit"
+                             HorizontalOptions="Center" />
+                        </Border>
 
+                    </Grid>
+                    <Grid Grid.Row="0" 
+                          Grid.Column="1"                                                      
+                          Padding="19"                          
+                          BackgroundColor="#60a5fa">
 
-                  <Label Text="Process Event Pics"
-                         FontSize="32"
-                         FontAttributes="Bold"
-                         HorizontalTextAlignment="Center"
-                         TextColor="#FFFF00" />
-                </Grid>
-                <Grid Grid.Row="1"
-                       Padding="20,10"
-                    BackgroundColor="#60a5fa">
-                  <Label
-                        Text="By Running Stars"
-                        HorizontalTextAlignment="Center"
-                        FontSize="24"
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*" Padding="0">
+
+                            <Grid Grid.Row="0" 
+           Grid.Column="0"                                                      
+           Padding="6"
+           BackgroundColor="#60a5fa">
+                                <!-- App Title -->
+                                <Label Text="Process Event Pics"
+                        FontSize="32"
                         FontAttributes="Bold"
-                        TextColor="#FFFF00"
-                        VerticalOptions="Center"/>
+                        HorizontalTextAlignment="Center"
+                        TextColor="#FFFF00" />
+                            </Grid>
+
+                            <Grid Grid.Row="1" 
+           Grid.Column="0"                                                      
+           Padding="6"
+           BackgroundColor="#60a5fa">
+
+                                <Label Text="By Running Stars"
+ HorizontalTextAlignment="Center"                        
+ FontSize="24"
+ FontAttributes="Bold"
+ TextColor="#FFFF00"/>
+                            </Grid>
+
+
+                        </Grid>
+                    </Grid>
+
+
                 </Grid>
-              </Grid>
 
                 <!-- Main Description -->
                 <Border Padding="25"
@@ -113,6 +151,8 @@
                         </Label>
                     </VerticalStackLayout>
                 </Border>
+
+
 
                 <!-- Contact Information Section -->
                 <Border Padding="25"

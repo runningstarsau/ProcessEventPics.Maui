@@ -4,8 +4,28 @@
     <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
     <ActiveDebugFramework>net10.0-windows10.0.19041.0</ActiveDebugFramework>
     <ActiveDebugProfile>Windows Machine</ActiveDebugProfile>
+    <DeveloperId>522D7W9N86</DeveloperId>
+    <DevelopmentTeamId>522D7W9N86</DevelopmentTeamId>
+    <Source>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</Source>
+    <SmallTileSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</SmallTileSource>
+    <MediumTileSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</MediumTileSource>
+    <WideTileSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</WideTileSource>
+    <LargeTileSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</LargeTileSource>
+    <AppIconSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</AppIconSource>
+    <SplashScreenSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</SplashScreenSource>
+    <PackageLogoSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</PackageLogoSource>
+    <BadgeLogoSource>C:\Dev.Web\ProcessEventPics.Maui\Resources\Images\runningstars_volunteer_photographer.jpg</BadgeLogoSource>
+    <UapAppxPackageBuildMode>StoreAndSideload</UapAppxPackageBuildMode>
+    <AppxShowAllApps>False</AppxShowAllApps>
+    <_LastSelectedProfileId>MSIX-win-x64.pubxml</_LastSelectedProfileId>
+    <PackageOptionalProjectsInIdeBuilds>False</PackageOptionalProjectsInIdeBuilds>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
+  <ItemGroup>
+    <None Update="Platforms\Windows\Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
 </Project>
