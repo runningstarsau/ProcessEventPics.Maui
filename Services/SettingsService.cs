@@ -240,25 +240,16 @@ public class SettingsService
 
     private string GetDefaultEventPhotosFullSizeFolder(string brandName)
     {
-        if (OperatingSystem.IsWindows())
-            return @"E:\EventPhotos\FullSize";
-        else
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "EventPhotos\\FullSize");
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "EventPics", "FullSize");
     }
 
     private string GetDefaultEventPhotosCompressedFolder(string brandName)
     {
-        if (OperatingSystem.IsWindows())
-            return @"E:\EventPhotos\Compressed";
-        else
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "EventPhotos\\Compressed");
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "EventPics", "Compressed");
     }
 
     private string GetDefaultRawFolder(string brandName)
     {
-        if (OperatingSystem.IsWindows())
-            return @"P:\";
-        else
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "RAW");
+        return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "EventPics", "RAW");
     }
 }
