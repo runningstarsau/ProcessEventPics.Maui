@@ -7,7 +7,7 @@
   xmlns:uap18="http://schemas.microsoft.com/appx/manifest/uap/windows10/18"
   IgnorableNamespaces="uap rescap uap18">
 
-  <Identity Name="RunningStars.ProcessEventPics" Publisher="CN=2193A4B7-B579-4330-B4F2-9644D37BA8D9" Version="1.1.5.0" />
+  <Identity Name="RunningStars.ProcessEventPics" Publisher="CN=2193A4B7-B579-4330-B4F2-9644D37BA8D9" Version="1.1.7.0" />
 
   <mp:PhoneIdentity PhoneProductId="B2E12CAD-3BE7-4313-BCD8-AE629B3B7BAA" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

@@ -8,8 +8,7 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
-		// Enable ImageSharp's preference for contiguous image buffers to improve performance and reduce memory fragmentation
-		SixLabors.ImageSharp.Configuration.Default.PreferContiguousImageBuffers = true;
+		SixLabors.ImageSharp.Configuration.Default.MemoryAllocator = SixLabors.ImageSharp.Memory.MemoryAllocator.Create();
 
 		var builder = MauiApp.CreateBuilder();
 		builder

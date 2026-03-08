@@ -29,23 +29,7 @@ public class ImageProcessingService
 
     private static ImageSharpImage LoadImageForProcessing(string sourceFile)
     {
-        try
-        {
-            using var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            return ImageSharpImage.Load(sourceStream);
-        }
-        catch (Exception primaryException) when (OperatingSystem.IsMacCatalyst() || OperatingSystem.IsMacOS())
-        {
-            try
-            {
-                byte[] imageBytes = File.ReadAllBytes(sourceFile);
-                return ImageSharpImage.Load(imageBytes);
-            }
-            catch (Exception fallbackException)
-            {
-                throw new InvalidOperationException($"Unable to load image '{sourceFile}'.", new AggregateException(primaryException, fallbackException));
-            }
-        }
+        return ImageSharpImage.Load(sourceFile);
     }
 
     public async Task<(string[] jpgFiles, string[] rawFiles)> GetFilesAsync(string sourceFolder)
@@ -193,6 +177,8 @@ public class ImageProcessingService
                     {
                         int originalWidth = image.Width;
                         int originalHeight = image.Height;
+
+                        image.Metadata.ExifProfile = null;
 
                         int newWidth, newHeight;
                         if (originalWidth > originalHeight)
